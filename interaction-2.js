@@ -66,7 +66,7 @@ function rotationChange(rotx, roty, rotz) {
     let doorValue = 0.5 * Math.pow(normalized, 2);
 
     if (dspNode) {
-        dspNode.setParamValue("/door/PARAMETER", doorValue);
+         playaudio(doorValue);
     }
 }
 
@@ -114,7 +114,6 @@ function playAudio(doorValue = 1) {
     }
     dspNode.setParamValue("/door/door/position", doorValue)
     dspNode.setParamValue("/door/volume", 1)
-    setTimeout(() => { dspNode.setParamValue("/door/volume", 0) }, 100);
 }
 
 //==========================================================================================
