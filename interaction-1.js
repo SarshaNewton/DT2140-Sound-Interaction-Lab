@@ -65,18 +65,18 @@ function mousePressed() {
 }
 
 function deviceMoved() {
-    movetimer = millis();
-    statusLabels[2].style("color", "pink");
-    playAudio()
+    // movetimer = millis();
+    // statusLabels[2].style("color", "pink");
+    // playAudio()
 }
 
 function deviceTurned() {
     threshVals[1] = turnAxis;
 }
 function deviceShaken() {
-    // shaketimer = millis();
-    // statusLabels[0].style("color", "pink");
-    // playAudio();
+    shaketimer = millis();
+    statusLabels[0].style("color", "pink");
+    playAudio();
 }
 
 function getMinMaxParam(address) {
