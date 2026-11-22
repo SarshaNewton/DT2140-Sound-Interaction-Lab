@@ -52,25 +52,22 @@ door.createDSP(audioContext, 1024)
 //==========================================================================================
 
 function accelerationChange(accx, accy, accz) {
-    // playAudio()
 }
 
 function rotationChange(rotx, roty, rotz) {
     const x = Math.max(0, Math.min(1, roty / 90));
 
     // Parabolic curve: 0 → 1 → 0
-    const doorValue = 4 * x * (1 - x);
-
-    console.log("Door volume:", doorValue);
+    const doorValue = 2 * x * (1 - x);
 
     if (dspNode) {
-        playaudio(doorValue);
+        playAudio(doorValue);
     }
 }
 
 function mousePressed() {
-    playAudio()
-    // Use this for debugging from the desktop!
+    // console.log("Mouse pressed!");
+    // playAudio(0.3);
 }
 
 function deviceMoved() {
@@ -103,7 +100,7 @@ function getMinMaxParam(address) {
 //
 //==========================================================================================
 
-function playAudio(doorValue = 1) {
+function playAudio(doorValue = 0.5) {
     if (!dspNode) {
         return;
     }
@@ -112,6 +109,10 @@ function playAudio(doorValue = 1) {
     }
     dspNode.setParamValue("/door/door/position", doorValue)
     dspNode.setParamValue("/door/volume", 1)
+    dspNode.getParams().forEach(param => {
+        console.log(param, dspNode.getParamValue(param));
+    });
+ 
 }
 
 //==========================================================================================
