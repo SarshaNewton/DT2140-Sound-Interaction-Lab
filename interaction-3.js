@@ -52,11 +52,21 @@ wind.createDSP(audioContext, 1024)
 //==========================================================================================
 
 function accelerationChange(accx, accy, accz) {
+      // Calculate total acceleration
     let acceleration = Math.sqrt(
         accx ** 2 + accy ** 2 + accz ** 2
     );
 
-    let value = constrain(acceleration / 20, 0, 1);
+    // Remove approximate gravity
+    let movement = Math.max(0, acceleration - 9.81);
+
+    // Map movement to wind force (0–1)
+    let value = constrain(movement / 10, 0, 1);
+
+    // Ignore tiny changes
+    if (movement < 0.3) {
+        value = 0;
+    }
 
     playAudio(value);
 }
@@ -105,9 +115,8 @@ function playAudio(value = 1) {
     if (audioContext.state === 'suspended') {
         return;
     }
-    dspNode.setParamValue("/wind/force", value)
-    dspNode.setParamValue("/wind/volume", 1)
-    setTimeout(() => { dspNode.setParamValue("/wind/volume", 0) }, 100);
+    dspNode.setParamValue("/wind/force", value);
+    dspNode.setParamValue("/wind/volume", value);
 }
 
 //==========================================================================================
