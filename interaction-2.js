@@ -101,6 +101,10 @@ function getMinMaxParam(address) {
 //==========================================================================================
 
 function playAudio(doorValue = 0.5) {
+    let fadeInterval;
+    const fadeDuration = 300; // milliseconds
+    const maxVolume = 0.5;
+
     if (!dspNode) {
         return;
     }
@@ -108,10 +112,28 @@ function playAudio(doorValue = 0.5) {
         return;
     }
     dspNode.setParamValue("/door/door/position", doorValue)
-    dspNode.setParamValue("/door/volume", 1)
-    dspNode.getParams().forEach(param => {
-        console.log(param, dspNode.getParamValue(param));
-    });
+    
+    // Cancel previous fade
+    clearInterval(fadeInterval);
+
+    const startTime = performance.now();
+
+    // Start at maximum volume
+    dspNode.setParamValue("/door/volume", maxVolume);
+
+    fadeInterval = setInterval(() => {
+        const elapsed = performance.now() - startTime;
+
+        // Linear fade from maxVolume to 0
+        const progress = Math.min(1, elapsed / fadeDuration);
+        const volume = maxVolume * (1 - progress);
+
+        dspNode.setParamValue("/door/volume", volume);
+
+        if (progress >= 1) {
+            clearInterval(fadeInterval);
+        }
+    }, 16);
  
 }
 
