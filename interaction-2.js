@@ -56,17 +56,15 @@ function accelerationChange(accx, accy, accz) {
 }
 
 function rotationChange(rotx, roty, rotz) {
-    let angle = Math.abs(rotz);
+    const x = Math.max(0, Math.min(1, roty / 90));
 
-    angle = constrain(angle, 0, 90);
+    // Parabolic curve: 0 → 1 → 0
+    const doorValue = 4 * x * (1 - x);
 
-    // Normalize to 0–1
-    let normalized = angle / 90;
-    // Quadratic curve: map to 0–0.5
-    let doorValue = 0.5 * Math.pow(normalized, 2);
+    console.log("Door volume:", doorValue);
 
     if (dspNode) {
-         playaudio(doorValue);
+        playaudio(doorValue);
     }
 }
 
