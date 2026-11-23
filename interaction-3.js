@@ -57,16 +57,8 @@ function accelerationChange(accx, accy, accz) {
         accx ** 2 + accy ** 2 + accz ** 2
     );
 
-    // Remove approximate gravity
-    let movement = Math.max(0, acceleration - 9.81);
-
     // Map movement to wind force (0–1)
-    let value = constrain(movement / 10, 0, 1) * 0.98;
-
-    // Ignore tiny changes
-    if (movement < 0.3) {
-        value = 0;
-    }
+    let value = constrain(acceleration / 10, 0, 1) * 0.98;
 
     playAudio(value);
 }
